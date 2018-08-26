@@ -16,14 +16,14 @@ function setup() {
 function draw() {
   background(0);
 
-  for (var i = pipes.length-1; i >= 0; i--) {
-    pipes[i].show();
-    pipes[i].update();
-
-    if (pipes[i].offscreen()) {
-      pipes.splice(i, 1);
-    }
-  };
+  // for (var i = pipes.length-1; i >= 0; i--) {
+  //   pipes[i].show();
+  //   pipes[i].update();
+  //
+  //   if (pipes[i].offscreen()) {
+  //     pipes.splice(i, 1);
+  //   }
+  // };
 
   for (var i = birds.length-1; i >= 0; i--) {
     birds[i].compAI();
@@ -38,6 +38,7 @@ function draw() {
 
     for (var j = birds.length-1; j >= 0; j--) {
       if (lasers[i].collides(birds[j].x, birds[j].y, birds[j].hitBox)) {
+        
         birds[j].isHit();
       }
     }
