@@ -26,6 +26,7 @@ function draw() {
   };
 
   for (var i = birds.length-1; i >= 0; i--) {
+    birds[i].compAI();
     birds[i].update();
     birds[i].show();
   };
@@ -37,7 +38,7 @@ function draw() {
 
     for (var j = birds.length-1; j >= 0; j--) {
       if (lasers[i].collides(birds[j].x, birds[j].y, birds[j].hitBox)) {
-        // birds[j].isHit();
+        birds[j].isHit();
       }
     }
     if (lasers[i].edges() || lasers[i].toDel === true) {

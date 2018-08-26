@@ -21,9 +21,32 @@ function Bird(x, isNPC) {
     ellipse(this.x, this.y-25, this.armRadius, this.armRadius);
   }
 
+  this.isHit = function() {
+    this.x += 30;
+    this.y += random(-10, 10);
+  }
+
   this.compAI = function() {
     if (this.isNPC === true) {
+      this.moveAI();
+    }
+  }
 
+  this.moveAI = function() {
+    if (this.x > width - (.2 * width)) {
+      this.leftRight = 2;
+    } else {
+      this.leftRight = 0;
+    }
+    if (this.y < .2 * height) {
+      this.upDown = 2;
+    } else {
+      this.upDown = 0;
+    }
+    if (this.y > height - (.2 * height)) {
+      this.upDown = -2;
+    } else {
+      this.upDown = 0;
     }
   }
 

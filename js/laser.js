@@ -22,8 +22,7 @@ function Laser(x, y, offset) {
     }
 
   this.collides = function(x, y, hitBox) {
-    if (x > this.x && x < this.x + this.l && y + hitBox > this.y && y - hitBox < this.y + this.w) {
-      console.log(hitBox);
+    if (x - 32 > this.x && x - 32 < this.x + this.l && y + hitBox > this.y && y - hitBox < this.y + this.w) {
       console.log("hit");
       this.toDel = true;
       return true;
