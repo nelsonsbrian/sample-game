@@ -5,6 +5,8 @@ function Bird(x, isNPC) {
   this.gravity = 0.50;
   this.upDown = 0;
   this.radius = 32;
+  this.armRadius = this.radius/1.5;
+  this.hitBox = (this.radius + 15 + 25) / 2;
   this.maxSpeed = 6;
   this.isNPC = isNPC;
 
@@ -14,9 +16,9 @@ function Bird(x, isNPC) {
     } else {
       fill(0,255,0);
     }
-    ellipse(this.x, this.y, this.radius, this.radius+15);
-    ellipse(this.x, this.y+25, this.radius/1.5, this.radius/1.5);
-    ellipse(this.x, this.y-25, this.radius/1.5, this.radius/1.5);
+    ellipse(this.x, this.y, this.radius, this.radius + 15);
+    ellipse(this.x, this.y+25, this.armRadius, this.armRadius);
+    ellipse(this.x, this.y-25, this.armRadius, this.armRadius);
   }
 
   this.compAI = function() {

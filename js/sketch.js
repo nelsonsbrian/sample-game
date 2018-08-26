@@ -36,7 +36,8 @@ function draw() {
     lasers[i].shoot();
 
     for (var j = birds.length-1; j >= 0; j--) {
-      if (lasers[i].collides(birds[j].x, birds[j].y)) {
+      if (lasers[i].collides(birds[j].x, birds[j].y, birds[j].hitBox)) {
+        // birds[j].isHit();
       }
     }
     if (lasers[i].edges() || lasers[i].toDel === true) {
