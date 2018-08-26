@@ -14,7 +14,9 @@ function Bird(x, isNPC) {
     } else {
       fill(0,255,0);
     }
-    ellipse(this.x, this.y, this.radius, this.radius);
+    ellipse(this.x, this.y, this.radius, this.radius+15);
+    ellipse(this.x, this.y+25, this.radius/1.5, this.radius/1.5);
+    ellipse(this.x, this.y-25, this.radius/1.5, this.radius/1.5);
   }
 
   this.compAI = function() {
@@ -55,16 +57,12 @@ function Bird(x, isNPC) {
       this.leftRight = 0;
       this.upDown = 0;
     }
-
-
     this.x -= this.leftRight * this.gravity;
     this.y += this.upDown * this.gravity;
-
     if (this.y > height - this.radius/2) {
       this.y = height - this.radius/2;
       this.upDown = 0;
     }
-
     if (this.y < this.radius/2) {
       this.y = this.radius/2;
       this.upDown = 0;
