@@ -1,4 +1,6 @@
-function Bird(x, isNPC) {
+function Bird(x, isNPC, name) {
+  this.health = 100;
+  this.playerName = name;
   this.y = height/2;
   this.x = x;
   this.leftRight = 0;
@@ -13,9 +15,9 @@ function Bird(x, isNPC) {
   this.damaged = 0;
 
   this.show = function() {
-    if (this.damaged > 0) {
+    if (this.damagedColor > 0) {
       fill(255,0,0);
-      this.damaged--;
+      this.damagedColor--;
     } else if (this.isNPC === true) {
       fill(51,153,255);
     } else {
@@ -26,10 +28,25 @@ function Bird(x, isNPC) {
     ellipse(this.x, this.y-25, this.armRadius, this.armRadius);
   }
 
+
+
   this.isHit = function() {
     this.x += 30;
     this.y += random(-10, 10);
-    this.damaged = 5;
+    this.damagedColor = 5;
+    this.health -= 15;
+    this.health = constrain(this.health, 0, 120);
+  }
+
+  this.isDead = function() {
+    if (this.health <= 0) {
+      this.death();
+    }
+    return (this.health <= 0);
+  }
+
+  this.death = function() {
+    console.log(this.playerName + " is dead!")
   }
 
   this.compAI = function() {
