@@ -30,11 +30,11 @@ function Bird(x, isNPC, name) {
 
 
 
-  this.isHit = function() {
+  this.isHit = function(damage) {
     this.x += 30;
     this.y += random(-10, 10);
     this.damagedColor = 5;
-    this.health -= 15;
+    this.health -= damage;
     this.health = constrain(this.health, 0, 120);
   }
 
@@ -46,7 +46,9 @@ function Bird(x, isNPC, name) {
   }
 
   this.death = function() {
-    console.log(this.playerName + " is dead!")
+    console.log(this.playerName + " is dead!");
+    $('#output').text(this.playerName + " is dead!");
+
   }
 
   this.compAI = function() {

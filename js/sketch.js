@@ -5,7 +5,8 @@ var laser;
 var bird;
 
 function setup() {
-  createCanvas(640, 480);
+  var canvas = createCanvas(640, 480);
+  canvas.parent('gameBoard');
   gameReset();
 }
 
@@ -13,8 +14,6 @@ function gameReset() {
   birds = [];
   pipes = [];
   lasers = [];
-  var laser;
-  var bird;  
   bird = new Bird(65, false, "Human");
   birds.push(bird);
   bird = new Bird(575, true, "Computer");
@@ -51,8 +50,9 @@ function draw() {
 
     for (var j = birds.length-1; j >= 0; j--) {
       if (lasers[i].collides(birds[j].x, birds[j].y, birds[j].hitBox)) {
-
-        birds[j].isHit();
+        var laserDamage = lasers[i].damage;
+        console.log(laserDamage);
+        birds[j].isHit(laserDamage);
       }
     }
     if (lasers[i].edges() || lasers[i].toDel === true) {
@@ -63,11 +63,7 @@ function draw() {
 }
 
 function keyPressed() {
-  if (key === ' ') {
-    var laser = new Laser(birds[0].x, birds[0].y, birds[0].radius);
-    lasers.push(laser);
-    laser.shoot();
-  }
+
   if (keyCode === LEFT_ARROW) {
     birds[0].moveLeftRight(3);
   }
@@ -82,7 +78,32 @@ function keyPressed() {
   }
 }
 
-
+function keyTyped() {
+  if (key === ' ') {
+  }
+  if (key === '1') {
+    var laser = new Laser(birds[0].x, birds[0].y, birds[0].radius, "regular");
+    lasers.push(laser);
+    // laser.shoot();
+  }
+  if (key === '2') {
+    var count = 0;
+    for (i=0;i<lasers.length;i++) {
+      if (lasers[i].size === "mini0" || lasers[i].size === "mini1" || lasers[i].size === "mini2") {
+        count++;
+      }
+    }
+    if (count === 0) {
+      for (i=0;i<3;i++) {
+        var laser = new Laser(birds[0].x, birds[0].y, birds[0].radius, "mini" + i);
+        // console.log(laser.size);
+        laser.mini();
+        lasers.push(laser);
+        // laser.shoot();
+      }
+    }
+  }
+}
 
 
 
