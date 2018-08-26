@@ -35,6 +35,7 @@ function Laser(x, y, offset, size) {
     if (this.size === "mini0") {
       this.y += this.spread;
     } else if (this.size === "mini1") {
+      this.x += this.spread / 2;
     } else if (this.size === "mini2") {
       this.y -= this.spread;
     }
@@ -53,8 +54,8 @@ function Laser(x, y, offset, size) {
     return (this.x > width);
     }
 
-  this.collides = function(x, y, hitBox) {
-    if (x - 32 > this.x && x - 32 < this.x + this.l && y + hitBox > this.y && y - hitBox < this.y + this.w) {
+  this.collides = function(x, y, hitBoxY) {
+    if (x - 32 > this.x && x - 32 < this.x + this.l && y + hitBoxY > this.y && y - hitBoxY < this.y + this.w) {
       console.log("hit");
       this.toDel = true;
       return true;
