@@ -52,7 +52,7 @@ function draw() {
     lasers[i].shoot();
 
     for (var j = mobs.length-1; j >= 0; j--) {//check to see if laser hits a mob
-      if (lasers[i].collides(mobs[j].x, mobs[j].y, mobs[j].hitBoxY)) {
+      if (lasers[i].collides(mobs[j].x, mobs[j].y, mobs[j].hitBoxX, mobs[j].hitBoxY)) {
         var laserDamage = lasers[i].damage;
         console.log(laserDamage);
         mobs[j].isHit(laserDamage);

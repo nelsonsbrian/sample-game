@@ -14,6 +14,8 @@ function Mob(x, isNPC, name) {
   this.maxSpeedAI = 10;
   this.isNPC = isNPC;
   this.damaged = 0;
+  this.coords = [];
+
 
   this.show = function() {
     if (this.damagedColor > 0) {
@@ -98,143 +100,37 @@ function Mob(x, isNPC, name) {
     this.leftRight = constrain(this.leftRight, -this.maxSpeed, this.maxSpeed);
   }
 
-  this.update = function() {
-    for (i=1;i<mobs.length;i+=10) {//mob collides with another mob
-      if (mobs[i].playerName !== this.playerName) {
+  this.updateCoords = function() {
+    this.coords = [this.x + this.hitBoxX, this.y + this.hitBoxY, this.x - this.hitBoxX, this.y - this.hitBoxY];
+  }
 
-          // N plane intersect
-          if (((this.x - this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
-          (this.y - this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
-          (this.x - this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
-          (this.y - this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY)) ||
-          ((this.x + this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
-          (this.y - this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
-          (this.x + this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
-          (this.y - this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY))) {
-              console.log("north plane - no north");
-              if (this.upDown < 0) {
-              this.upDown = 0;
-            }
+  this.update = function() {
+    for (i=0;i<mobs.length;i++) {//mob collides with another mob
+      for (j=0;j<mobs.length;j++) {
+        var collision = [];
+        if (mobs[i].playerName !== mobs[j].playerName) {
+          mobs[i].updateCoords();
+          collision = mobs[i].collision(mobs[i].coords, j);
+          if (collision[0] === 1 && mobs[i].upDown < 0) {
+            mobs[i].upDown = 0;
           }
-          // S plane intersect
-          if (((this.x - this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
-          (this.y + this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
-          (this.x - this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
-          (this.y + this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY)) ||
-          ((this.x + this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
-          (this.y + this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
-          (this.x + this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
-          (this.y + this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY))) {
-              console.log("south plane - no south");
-              if (this.upDown > 0) {
-              this.upDown = 0;
-            }
+          if (collision[1] === 1 && mobs[i].upDown > 0) {
+            mobs[i].upDown = 0;
           }
-          // W plane intersect
-          if (((this.x - this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
-          (this.y - this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
-          (this.x - this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
-          (this.y - this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY)) ||
-          ((this.x - this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
-          (this.y + this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
-          (this.x - this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
-          (this.y + this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY))) {
-              console.log("west plane - no west");
-              if (this.leftRight > 0) {
-              this.leftRight = 0;
-            }
+          if (collision[2] === 1 && mobs[i].leftRight > 0) {
+            mobs[i].leftRight = 0;
           }
-          // E plane intersect
-          if (((this.x + this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
-          (this.y - this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
-          (this.x + this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
-          (this.y - this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY)) ||
-          ((this.x + this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
-          (this.y + this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
-          (this.x + this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
-          (this.y + this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY))) {
-              console.log("east plane - no east");
-              if (this.leftRight < 0) {
-              this.leftRight = 0;
-            }
+          if (collision[3] === 1 && mobs[i].leftRight < 0) {
+            mobs[i].leftRight = 0;
           }
         }
       }
-          // // NE plane intersect
-          // if ((this.x + this.hitBoxX < mobs[i].x + mobs[i].hitBoxX) &&
-          // (this.y - this.hitBoxY < mobs[i].y + mobs[i].hitBoxY) &&
-          // (this.x + this.hitBoxX > mobs[i].x - mobs[i].hitBoxX) &&
-          // (this.y - this.hitBoxY > mobs[i].y - mobs[i].hitBoxY)) {
-          // }
-          // // SW plane intersect
-          // if ((this.x - this.hitBoxX < mobs[i].x + mobs[i].hitBoxX) &&
-          // (this.y + this.hitBoxY < mobs[i].y + mobs[i].hitBoxY) &&
-          // (this.x - this.hitBoxX > mobs[i].x - mobs[i].hitBoxX) &&
-          // (this.y + this.hitBoxY > mobs[i].y - mobs[i].hitBoxY)) {
-          // }
-          // // SE plane instersect
-          // if ((this.x + this.hitBoxX < mobs[i].x + mobs[i].hitBoxX) &&
-          // (this.y + this.hitBoxY < mobs[i].y + mobs[i].hitBoxY) &&
-          // (this.x + this.hitBoxX > mobs[i].x - mobs[i].hitBoxX) &&
-          // (this.y + this.hitBoxY > mobs[i].y - mobs[i].hitBoxY)) {
-          // }
+    }
+    this.edges();
+  }
 
-
-          // (this.x + this.hitBoxX - this.HitBoxY < mobs[i].x + mobs[i].hitBoxY ||
-          // this.y + this.hitboxX - this.HitBoxY > mobs[i].y - mobs[i].hitBoxX) &&
-          //
-          // (this.x - this.hitBoxX + this.hitBoxY > mobs[i].x - mobs[i].hitBoxY ||
-          // this.y - this.hitBoxX + this.hitBoxY < mobs[i].y + mobs[i].hitBoxX) &&
-          //
-          // (this.x + this.hitBoxX + this.hitBoxY > mobs[i].x - mobs[i].hitBoxY ||
-          // this.y + this.hitBoxX + this.hitBoxY > mobs[i].y - mobs[i].hitBoxX)
-          // ) {
-          //
-          //   console.log("intersect");
-          // } else {
-            // console.log("no");
-        //   }
-        // }
-
-
-        //     mobs[i].x - mobs[i].hitBoxX &&
-        //     this.x + this.hitBoxX < mobs[i].x + mobs[i].hitBoxX &&
-        //     this.x + this.hitBoxX > mobs[i].x - mobs[i].hitBoxY &&
-        //     this.x + this.hitBoxX < mobs[i].x + mobs[i].hitBoxY) {
-        //     this.leftRight = 0;
-        //   }
-        //   if (this.leftRight > 0 &&
-        //     this.x - this.hitBoxX > mobs[i].x - mobs[i].hitBoxX &&
-        //     this.x - this.hitBoxX < mobs[i].x + mobs[i].hitBoxX &&
-        //     this.x - this.hitBoxX > mobs[i].x - mobs[i].hitBoxY &&
-        //     this.x - this.hitBoxX < mobs[i].x + mobs[i].hitBoxY) {
-        //     this.leftRight = 0;
-        //   }
-        //   if (this.upDown < 0 &&
-        //     this.y + this.hitBoxY > mobs[i].y - mobs[i].hitBoxX &&
-        //     this.y + this.hitBoxY < mobs[i].y + mobs[i].hitBoxX &&
-        //     this.y + this.hitBoxY > mobs[i].y - mobs[i].hitBoxY &&
-        //     this.y + this.hitBoxY < mobs[i].y + mobs[i].hitBoxY) {
-        //     this.upDown = 0;
-        //   }
-        //   if (this.upDown < 0 &&
-        //     this.y - this.hitBoxY > mobs[i].y - mobs[i].hitBoxX &&
-        //     this.y - this.hitBoxY < mobs[i].y + mobs[i].hitBoxX &&
-        //     this.y - this.hitBoxY > mobs[i].y - mobs[i].hitBoxY &&
-        //     this.y - this.hitBoxY < mobs[i].y + mobs[i].hitBoxY) {
-        //     this.upDown = 0;
-        //   }
-        // }
-    //   }
-    // }
-    //
-    // if (this.x + this.hitBoxX > mobs[i].x - mobs[i].hitBoxX &&
-    // this.x - this.hitBoxX < mobs[i].x + mobs[i].hitBoxX &&
-    // this.y + this.hitBoxY > mobs[i].y - mobs[i].hitBoxY &&
-    // this.y - this.hitBoxY < mobs[i].y + mobs[i].hitBoxY) {
-
-
-    //mob tries to go offscreen
+  //mob tries to go offscreen
+  this.edges = function() {
     if (this.x >= width-this.diameter/2) {
       this.x = width-this.diameter/2-1;
       this.leftRight = constrain(this.leftRight, 0, this.maxSpeed)
@@ -253,7 +149,131 @@ function Mob(x, isNPC, name) {
     }
     //add up resulting movemnts and update drawing
     this.x -= this.leftRight * this.gravity;
-    this.y += this.upDown * this.gravity;
+    this.y += this.upDown * this.gravity
+  }
+
+  this.collision = function(coords, index) {
+    // N plane intersect
+    var returnArr = [0,0,0,0];
+  // this.coords = [this.x + this.hitBoxX, this.y + this.hitBoxY, this.x - this.hitBoxX, this.y - this.hitBoxY];
+    if (((coords[2] <= mobs[index].x + mobs[index].hitBoxX) &&
+    (coords[3] <= mobs[index].y + mobs[index].hitBoxY) &&
+    (coords[2] >= mobs[index].x - mobs[index].hitBoxX) &&
+    (coords[3] >= mobs[index].y - mobs[index].hitBoxY)) ||
+    ((coords[0] <= mobs[index].x + mobs[index].hitBoxX) &&
+    (coords[3] <= mobs[index].y + mobs[index].hitBoxY) &&
+    (coords[0] >= mobs[index].x - mobs[index].hitBoxX) &&
+    (coords[3] >= mobs[index].y - mobs[index].hitBoxY))) {
+      returnArr[0] = 1;
+    }
+    // S plane intersect
+    if (((coords[2] <= mobs[index].x + mobs[index].hitBoxX) &&
+    (coords[1] <= mobs[index].y + mobs[index].hitBoxY) &&
+    (coords[2] >= mobs[index].x - mobs[index].hitBoxX) &&
+    (coords[1] >= mobs[index].y - mobs[index].hitBoxY)) ||
+    ((coords[0] <= mobs[index].x + mobs[index].hitBoxX) &&
+    (coords[1] <= mobs[index].y + mobs[index].hitBoxY) &&
+    (coords[0] >= mobs[index].x - mobs[index].hitBoxX) &&
+    (coords[1] >= mobs[index].y - mobs[index].hitBoxY))) {
+      returnArr[1] = 1;
+    }
+    // W plane intersect
+    if (((coords[2] <= mobs[index].x + mobs[index].hitBoxX) &&
+    (coords[3] <= mobs[index].y + mobs[index].hitBoxY) &&
+    (coords[2] >= mobs[index].x - mobs[index].hitBoxX) &&
+    (coords[3] >= mobs[index].y - mobs[index].hitBoxY)) ||
+    ((coords[2] <= mobs[index].x + mobs[index].hitBoxX) &&
+    (coords[1] <= mobs[index].y + mobs[index].hitBoxY) &&
+    (coords[2] >= mobs[index].x - mobs[index].hitBoxX) &&
+    (coords[1] >= mobs[index].y - mobs[index].hitBoxY))) {
+      returnArr[2] = 1;
+    }
+    // E plane intersect
+    if (((coords[0] <= mobs[index].x + mobs[index].hitBoxX) &&
+    (coords[3] <= mobs[index].y + mobs[index].hitBoxY) &&
+    (coords[0] >= mobs[index].x - mobs[index].hitBoxX) &&
+    (coords[3] >= mobs[index].y - mobs[index].hitBoxY)) ||
+    ((coords[0] <= mobs[index].x + mobs[index].hitBoxX) &&
+    (coords[1] <= mobs[index].y + mobs[index].hitBoxY) &&
+    (coords[0] >= mobs[index].x - mobs[index].hitBoxX) &&
+    (coords[1] >= mobs[index].y - mobs[index].hitBoxY))) {
+      returnArr[3] = 1;
+    }
+    return returnArr;
   }
 
 }
+
+
+
+//     if (this.upDown < 0) {
+//       this.upDown = 0;
+//     }
+//     if (this.upDown > 0) {
+//       this.upDown = 0;
+//     }
+
+//     if (this.leftRight > 0) {
+//       this.leftRight = 0;
+//     }
+//     if (this.leftRight < 0) {
+//       this.leftRight = 0;
+//     }
+
+
+
+// this.collision = function(coords) {
+//   // N plane intersect
+  // this.coords = [this.x + this.hitBoxX, this.y + this.hitBoxY, this.x - this.hitBoxX, this.y - this.hitBoxY];
+//   if (((this.x - this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
+//   (this.y - this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
+//   (this.x - this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
+//   (this.y - this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY)) ||
+//   ((this.x + this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
+//   (this.y - this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
+//   (this.x + this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
+//   (this.y - this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY))) {
+//     if (this.upDown < 0) {
+//       this.upDown = 0;
+//     }
+//   }
+//   // S plane intersect
+//   if (((this.x - this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
+//   (this.y + this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
+//   (this.x - this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
+//   (this.y + this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY)) ||
+//   ((this.x + this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
+//   (this.y + this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
+//   (this.x + this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
+//   (this.y + this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY))) {
+//     if (this.upDown > 0) {
+//       this.upDown = 0;
+//     }
+//   }
+//   // W plane intersect
+//   if (((this.x - this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
+//   (this.y - this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
+//   (this.x - this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
+//   (this.y - this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY)) ||
+//   ((this.x - this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
+//   (this.y + this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
+//   (this.x - this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
+//   (this.y + this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY))) {
+//     if (this.leftRight > 0) {
+//       this.leftRight = 0;
+//     }
+//   }
+//   // E plane intersect
+//   if (((this.x + this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
+//   (this.y - this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
+//   (this.x + this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
+//   (this.y - this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY)) ||
+//   ((this.x + this.hitBoxX <= mobs[i].x + mobs[i].hitBoxX) &&
+//   (this.y + this.hitBoxY <= mobs[i].y + mobs[i].hitBoxY) &&
+//   (this.x + this.hitBoxX >= mobs[i].x - mobs[i].hitBoxX) &&
+//   (this.y + this.hitBoxY >= mobs[i].y - mobs[i].hitBoxY))) {
+//     if (this.leftRight < 0) {
+//       this.leftRight = 0;
+//     }
+//   }
+// }

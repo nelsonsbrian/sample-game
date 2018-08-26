@@ -1,10 +1,10 @@
 function Laser(x, y, offset, size) {
   this.w = 15;
-  this.l = 20 + offset;
-  this.x = x + offset;
+  this.offset = (offset / 2) ;
+  this.l = 45 ;
+  this.x = x + this.offset;
   this.y = y - 15 / 2;
-  this.offset = (offset / 2) + 2;
-  this.speed = 5;
+  this.speed = 3;
   this.toDel = false;
   this.damage = 6;
   this.size = size;
@@ -13,19 +13,19 @@ function Laser(x, y, offset, size) {
   this.show = function() {
     if (this.size === "regular") {
       fill(0,255,255);
-      rect(this.x + this.offset , this.y, this.l, this.w, 5);
+      rect(this.x, this.y, this.l, this.w, 5);
     }
     if (this.size === "mini0") {
       // this.y += this.spread;
       fill(255,255,0);
-      rect(this.x, this.y, this.l/2, this.w, 5);
+      rect(this.x, this.y, this.l/3, this.w, 5);
     } else if (this.size === "mini1") {
       fill(255,255,0);
-      rect(this.x, this.y, this.l/2, this.w, 5);
+      rect(this.x, this.y, this.l/3, this.w, 5);
     } else if (this.size === "mini2") {
       // this.y -= this.spread;
       fill(255,255,0);
-      rect(this.x, this.y, this.l/2, this.w, 5);
+      rect(this.x, this.y, this.l/3, this.w, 5);
     }
   }
 
@@ -46,7 +46,7 @@ function Laser(x, y, offset, size) {
       this.x += this.speed;
     }
     if (this.size === "mini0" || this.size === "mini1" || this.size === "mini2") {
-      this.x += this.speed - 1.5;
+      this.x += this.speed - this.speed / 3;
     }
   }
 
@@ -54,9 +54,8 @@ function Laser(x, y, offset, size) {
     return (this.x > width);
     }
 
-  this.collides = function(x, y, hitBoxY) {
-    if (x - 32 > this.x && x - 32 < this.x + this.l && y + hitBoxY > this.y && y - hitBoxY < this.y + this.w) {
-      console.log("hit");
+  this.collides = function(x, y, hitBoxX, hitBoxY) {
+    if (x - hitBoxX > this.x && x - hitBoxX < this.x + this.l && y + hitBoxY > this.y && y - hitBoxY < this.y + this.w) {
       this.toDel = true;
       return true;
     }
