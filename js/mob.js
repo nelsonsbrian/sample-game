@@ -15,6 +15,7 @@ function Mob(x, isNPC, name) {
   this.isNPC = isNPC;
   this.damaged = 0;
   this.coords = [];
+  this.gcd = 0;
 
 
   this.show = function() {
@@ -79,24 +80,12 @@ function Mob(x, isNPC, name) {
   }
 
   this.moveUpDown = function(amount) {
-    if (this.upDown > 0 && amount < 0) {
-      this.upDown = 0;
-    } else if (this.upDown < 0 && amount > 0) {
-        this.upDown = 0;
-    } else {
-      this.upDown += amount;
-    }
+    this.upDown = amount;
     this.upDown = constrain(this.upDown, -this.maxSpeed, this.maxSpeed);
   }
 
   this.moveLeftRight = function(amount) {
-    if (this.leftRight > 0 && amount < 0) {
-      this.leftRight = 0;
-    } else if (this.leftRight < 0 && amount > 0) {
-        this.leftRight = 0;
-    } else {
-      this.leftRight += amount;
-    }
+    this.leftRight = amount;
     this.leftRight = constrain(this.leftRight, -this.maxSpeed, this.maxSpeed);
   }
 
@@ -129,6 +118,10 @@ function Mob(x, isNPC, name) {
     this.edges();
   }
 
+  this.globalCD = function(amount) {
+    this.gcd += amount;
+  }
+
   //mob tries to go offscreen
   this.edges = function() {
     if (this.x >= width-this.diameter/2) {
@@ -149,7 +142,7 @@ function Mob(x, isNPC, name) {
     }
     //add up resulting movemnts and update drawing
     this.x -= this.leftRight * this.gravity;
-    this.y += this.upDown * this.gravity
+    this.y += this.upDown * this.gravity;
   }
 
   this.collision = function(coords, index) {

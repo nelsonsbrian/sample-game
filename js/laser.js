@@ -1,7 +1,7 @@
 function Laser(x, y, offset, size) {
   this.w = 15;
   this.offset = (offset / 2) ;
-  this.l = 45 ;
+  this.l = 33 ;
   this.x = x + this.offset;
   this.y = y - 15 / 2;
   this.speed = 3;

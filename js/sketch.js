@@ -1,3 +1,4 @@
+//Main Gameboard sketch
 var mobs = [];
 var pipes = [];
 var lasers = [];
@@ -20,15 +21,21 @@ function gameReset() {
   mobs.push(mob);
   mob = new Mob(575, true, "Computer");
   mobs.push(mob);
-  pipes.push(new Pipe());
+
 }
 
 //this function is called every frame, 30times a sec. Put things that need to be constantly updated in the draw() function
 function draw() {
   background(0);
 
+
   //update mob drawings
   for (var i = mobs.length-1; i >= 0; i--) {
+    if (frameCount % 90 == 0) {//global cooldown counter
+      if (mobs[i].gcd > 0) {
+        mobs[i].gcd -= 1;
+      }
+    }
     if (i === 0) {
       if (mobs[0] !== 'undefined') {//update the player health bars above canvas
         $('.p1Health').text(mobs[0].health);
@@ -69,16 +76,31 @@ function draw() {
 function keyPressed() {
 
   if (keyCode === LEFT_ARROW) {
-    mobs[0].moveLeftRight(3);
+    mobs[0].moveLeftRight(10);
   }
   if (keyCode === RIGHT_ARROW) {
-    mobs[0].moveLeftRight(-3);
+    mobs[0].moveLeftRight(-10);
   }
   if (keyCode === UP_ARROW) {
-    mobs[0].moveUpDown(-3);
+    mobs[0].moveUpDown(-10);
   }
   if (keyCode === DOWN_ARROW) {
-    mobs[0].moveUpDown(3);
+    mobs[0].moveUpDown(10);
+  }
+}
+
+function keyReleased() {
+  if (keyCode === LEFT_ARROW) {
+    mobs[0].moveLeftRight(0);
+  }
+  if (keyCode === RIGHT_ARROW) {
+    mobs[0].moveLeftRight(0);
+  }
+  if (keyCode === UP_ARROW) {
+    mobs[0].moveUpDown(0);
+  }
+  if (keyCode === DOWN_ARROW) {
+    mobs[0].moveUpDown(0);
   }
 }
 
@@ -87,9 +109,17 @@ function keyTyped() {
   if (key === ' ') {
   }
   if (key === '1') {
-    var laser = new Laser(mobs[0].x, mobs[0].y, mobs[0].diameter, "regular");
-    lasers.push(laser);
-    // laser.shoot();
+    var count = 0;
+    for (i=0;i<lasers.length;i++) {
+      if (lasers[i].size === "regular") {
+        count++;
+      }
+    }
+    if (count < 5 && mobs[0].gcd === 0) {
+      var laser = new Laser(mobs[0].x, mobs[0].y, mobs[0].diameter, "regular");
+      mobs[0].globalCD(1);
+      lasers.push(laser);
+    }
   }
   if (key === '2') {
     var count = 0;
@@ -101,10 +131,8 @@ function keyTyped() {
     if (count === 0) {
       for (i=0;i<3;i++) {
         var laser = new Laser(mobs[0].x, mobs[0].y, mobs[0].diameter, "mini" + i);
-        // console.log(laser.size);
         laser.mini();
         lasers.push(laser);
-        // laser.shoot();
       }
     }
   }
@@ -112,7 +140,22 @@ function keyTyped() {
 
 
 
-
+// var t = function( p ) {
+//
+//   p.setup = function() {
+//     p.createCanvas(200,50);
+//   }
+//
+//   p.draw = function() {
+//     p.background(255,0,0);
+//     var health = mobs[1].health;
+//     p.fill(0,255,0);
+//     p.rect(0,0,2*health,50);
+//   }
+//
+//
+// };
+// var myp5 = new p5(t, 'p2');
 
 
 
