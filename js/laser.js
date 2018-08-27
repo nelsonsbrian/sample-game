@@ -18,14 +18,14 @@ function Laser(x, y, offset, size) {
     if (this.size === "mini0") {
       // this.y += this.spread;
       fill(255,255,0);
-      rect(this.x, this.y, this.l/3, this.w, 5);
+      rect(this.x, this.y, this.l/2, this.w, 5);
     } else if (this.size === "mini1") {
       fill(255,255,0);
-      rect(this.x, this.y, this.l/3, this.w, 5);
+      rect(this.x, this.y, this.l/2, this.w, 5);
     } else if (this.size === "mini2") {
       // this.y -= this.spread;
       fill(255,255,0);
-      rect(this.x, this.y, this.l/3, this.w, 5);
+      rect(this.x, this.y, this.l/2, this.w, 5);
     }
   }
 

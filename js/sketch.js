@@ -4,34 +4,24 @@ var pipes = [];
 var lasers = [];
 var laser;
 var mob;
+var titleHeight = 50;
+var titles = [];
+var title
 
 // this function is called when the page loads and is the canvas setup
 function setup() {
-  var canvas = createCanvas(640, 480);
+  var canvas = createCanvas(640, 530);
   canvas.parent('gameBoard');
   gameReset();
 }
 
-// this is called at the beginning of the game and when the reset game button is pressed
-function gameReset() {
-  mobs = [];
-  pipes = [];
-  lasers = [];
-  mob = new Mob(65, false, "Human");
-  mobs.push(mob);
-  mob = new Mob(575, true, "Computer");
-  mobs.push(mob);
-
-}
 
 //this function is called every frame, 30times a sec. Put things that need to be constantly updated in the draw() function
 function draw() {
   background(0);
-
-
   //update mob drawings
   for (var i = mobs.length-1; i >= 0; i--) {
-    if (frameCount % 90 == 0) {//global cooldown counter
+    if (frameCount % 30 == 0) {//global cooldown counter
       if (mobs[i].gcd > 0) {
         mobs[i].gcd -= 1;
       }
@@ -48,6 +38,8 @@ function draw() {
     mobs[i].compAI();
     mobs[i].update();
     mobs[i].show();
+    titles[i].update(mobs[i].playerName, mobs[i].health);
+    titles[i].show(mobs[i].playerName, mobs[i].health);
     if (mobs[i].isDead()) {//if mob.health is = 0, remove mob
       mobs.splice(i,1);
     }
@@ -69,12 +61,25 @@ function draw() {
       lasers.splice(i,1);
     }
   }
+}
 
+// this is called at the beginning of the game and when the reset game button is pressed
+function gameReset() {
+  mobs = [];
+  pipes = [];
+  lasers = [];
+  mob = new Mob(65, false, "Human");
+  mobs.push(mob);
+  mob = new Mob(575, true, "Computer");
+  mobs.push(mob);
+  title = new Title(mobs[0].playerName, mobs[0].health);
+  titles.push(title);
+  title = new Title(mobs[1].playerName, mobs[1].health);
+  titles.push(title);
 }
 
 // keybindings for movement
 function keyPressed() {
-
   if (keyCode === LEFT_ARROW) {
     mobs[0].moveLeftRight(10);
   }
@@ -137,52 +142,3 @@ function keyTyped() {
     }
   }
 }
-
-
-
-// var t = function( p ) {
-//
-//   p.setup = function() {
-//     p.createCanvas(200,50);
-//   }
-//
-//   p.draw = function() {
-//     p.background(255,0,0);
-//     var health = mobs[1].health;
-//     p.fill(0,255,0);
-//     p.rect(0,0,2*health,50);
-//   }
-//
-//
-// };
-// var myp5 = new p5(t, 'p2');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// if (frameCount % 20 == 0) {
-//   pipes.push(new Pipe());
-// }
-
-
-// for (var i = pipes.length-1; i >= 0; i--) {
-//   pipes[i].show();
-//   pipes[i].update();
-//
-//   if (pipes[i].offscreen()) {
-//     pipes.splice(i, 1);
-//   }
-// };

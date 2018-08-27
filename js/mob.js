@@ -1,7 +1,7 @@
 function Mob(x, isNPC, name) {
   this.health = 100;
   this.playerName = name;
-  this.y = height/2;
+  this.y = (height + titleHeight) / 2;
   this.x = x;
   this.leftRight = 0;
   this.gravity = 0.50;
@@ -136,8 +136,8 @@ function Mob(x, isNPC, name) {
       this.y = height - this.diameter/2;
       this.upDown = 0;
     }
-    if (this.y < this.diameter/2) {
-      this.y = this.diameter/2;
+    if (this.y < this.diameter/2 + titleHeight) {
+      this.y = this.diameter/2 + titleHeight;
       this.upDown = 0;
     }
     //add up resulting movemnts and update drawing
