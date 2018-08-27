@@ -4,7 +4,7 @@ function Laser(x, y, offset, size) {
   this.l = 33 ;
   this.x = x + this.offset;
   this.y = y - 15 / 2;
-  this.speed = 3;
+  this.speed = 8;
   this.toDel = false;
   this.damage = 6;
   this.size = size;
@@ -63,3 +63,16 @@ function Laser(x, y, offset, size) {
   }
  //
 }
+
+//
+// fill(255);
+// stroke(120);
+// var beg = 0;
+// var a = 0.0;
+// var inc = TWO_PI / 25.0;
+// strokeWeight(19);
+// // for (var i = 0; i < 125; i++) {
+//   line(beg * 4, 450, beg * 4, 450 + sin(a) * 20.0);
+//   beg++;
+//   a = a + inc;
+// // }

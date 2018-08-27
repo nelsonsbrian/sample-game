@@ -10,7 +10,7 @@ function Mob(x, isNPC, name) {
   this.armDiameter = this.diameter/1.5;
   this.hitBoxY = ((this.diameter + 15 + 25) / 2) - 3;
   this.hitBoxX = (this.diameter / 2) - 3;
-  this.maxSpeed = 6;
+  this.maxSpeed = 10;
   this.maxSpeedAI = 10;
   this.isNPC = isNPC;
   this.damaged = 0;

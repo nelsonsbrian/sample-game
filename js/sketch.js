@@ -18,7 +18,9 @@ function setup() {
 
 //this function is called every frame, 30times a sec. Put things that need to be constantly updated in the draw() function
 function draw() {
-  background(0);
+  background(93);
+
+
   //update mob drawings
   for (var i = mobs.length-1; i >= 0; i--) {
     if (frameCount % 30 == 0) {//global cooldown counter
